@@ -17,18 +17,16 @@
 #import "ZJMainViewController.h"
 
 #import "ZJChooseViewController.h"
-#import "ZJUIMasonsyKit.h"
 #import "ZJKitNaigationController.h"
 #import "ZJCommitViewController.h"
 #import "ZJCommitFrame.h"
 #import "ZJCommit.h"
 #import "ZJBaseTableViewCell.h"
-#import "ZJKitAndMasonryViewController.h"
 #import "ZJTimeCountDownViewController.h"
 #import "ZJMasonryAutolayoutCellViewController.h"
 #import "ZJCollectionViewController.h"
 #import "ZJWebViewController.h"
-#import "ZJNavBarShadeViewController.h"
+//#import "ZJNavBarShadeViewController.h"
 #import "ZJSphereTagCloudViewController.h"
 #import "ZJPlayerListViewController.h"
 #import "ZJPickerViewController.h"
@@ -56,22 +54,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"ZJKitTool";
-    self.titleArray = @[@{@"title":@"快速创建控件+Masonry布局",@"className":@"ZJKitAndMasonryViewController"},
-                        @{@"title":@"UI控件",@"className":@"ZJUIViewController"},
+    self.titleArray = @[@{@"title":@"链式语法",@"className":@"ZJChainViewController"},
                         @{@"title":@"评论列表(MVVM)",@"className":@"ZJCommitViewController"},
                         @{@"title":@"筛选视图",@"className":@"ZJChooseViewController"},
                         @{@"title":@"倒计时 Cell",@"className":@"ZJTimeCountDownViewController"},
                         @{@"title":@"MasonryCell(类似朋友圈)",@"className":@"ZJMasonryAutolayoutCellViewController"},
                         @{@"title":@"CollectionView (瀑布流)",@"className":@"ZJCollectionViewController"},
                         @{@"title":@"WKWebView的使用",@"className":@"ZJWebViewController"},
-                        @{@"title":@"导航栏渐变",@"className":@"ZJNavBarShadeViewController"},
                         @{@"title":@"球形TagView",@"className":@"ZJSphereTagCloudViewController"},
                         @{@"title":@"视频列表",@"className":@"ZJPlayerListViewController"},
                         @{@"title":@"ZJPickerView",@"className":@"ZJPickerViewController"},
                         @{@"title":@"ZJNetworking",@"className":@"ZJNetworkViewController"},
                         @{@"title":@"图片压缩",@"className":@"ZJImageCompressViewController"},
                         @{@"title":@"ZJPopupView",@"className":@"ZJPopupViewController"},
-                        @{@"title":@"Method chaining",@"className":@"ZJChainViewController"},];
+                        ];
     [self setUpAllView];
 
 }
@@ -110,6 +106,7 @@
     
     NSDictionary *dict = self.titleArray[indexPath.row];
     UIViewController *vc = NSClassFromString(dict[@"className"]).new;
+    vc.title = dict[@"title"];
     [self.navigationController pushViewController:vc animated:YES];
     
 }

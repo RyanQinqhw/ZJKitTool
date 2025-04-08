@@ -7,6 +7,7 @@
 //
 
 #import "ZJBaseChainModel.h"
+#import "UIGestureRecognizer+ZJActionBlock.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,6 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ZJViewChainModel : ZJBaseChainModel <ZJViewChainModel *>
 
+#pragma mrk - Action
+/// 点击事件
+ZJ_CHAIN_PROPERTY ZJViewChainModel* (^ onTap)(ZJTapGestureBlock ontap);
 
 @end
 
@@ -23,6 +27,20 @@ NS_ASSUME_NONNULL_BEGIN
 @interface UIView (ZJChain)
 
 -(ZJViewChainModel *)zj_chain;
+
+- (void)addTapGestureWithCallback:(ZJTapGestureBlock)onTaped;
+
+//
+///**
+// *  点击手势
+// */
+//@property (nonatomic, strong, readonly) UITapGestureRecognizer *zj_tapGesture;
+//
+///**
+// *
+// *    长按手势
+// */
+//@property (nonatomic, strong, readonly) UILongPressGestureRecognizer *zj_longGesure;
 
 @end
 NS_ASSUME_NONNULL_END

@@ -52,6 +52,22 @@ ZJ_CHAIN_SCROLLVIEW_IMPLEMENTATION(showsHorizontalScrollIndicator, setShowsHoriz
 ZJ_CHAIN_SCROLLVIEW_IMPLEMENTATION(showsVerticalScrollIndicator, setShowsVerticalScrollIndicator, BOOL)
 
 ZJ_CHAIN_SCROLLVIEW_IMPLEMENTATION(scrollsToTop,setScrollsToTop, BOOL)
+
+- (ZJTextViewChainModel * _Nonnull (^)(NSString * _Nonnull))placeholder{
+    __weak typeof(self) weakSelf = self;
+    return ^ZJTextViewChainModel* (NSString * _Nonnull placeholder) {
+        [(UITextView *)weakSelf.view zj_textViewsPlaceholder:placeholder];
+        return weakSelf;
+    };
+}
+
+- (ZJTextViewChainModel * _Nonnull (^)(UIColor * _Nonnull))placeholderColor{
+    __weak typeof(self) weakSelf = self;
+    return ^ZJTextViewChainModel* (UIColor * _Nonnull placeholderColor) {
+        [(UITextView *)weakSelf.view zj_textViewsSetPlaceholderColor:placeholderColor];
+        return weakSelf;
+    };
+}
 @end
 
 @implementation UITextView (ZJChain)
@@ -69,4 +85,43 @@ ZJ_CHAIN_SCROLLVIEW_IMPLEMENTATION(scrollsToTop,setScrollsToTop, BOOL)
     }
     return model;
 }
++(void)load{
+    
+    // 获取类方法 class_getClassMethod
+    // 获取对象方法 class_getInstanceMethod
+    Method setFontMethod = class_getInstanceMethod(self, @selector(setFont:));
+    Method was_setFontMethod =class_getInstanceMethod(self, @selector(was_setFont:));
+    // 交换方法的实现
+    method_exchangeImplementations(setFontMethod, was_setFontMethod);
+    
+}
+
+-(void)zj_textViewsPlaceholder:(NSString *)placeholder{
+    //设置占位label
+    UILabel *label = [[UILabel alloc] init];
+    label.text = placeholder;
+    label.font = self.font;
+//    label.textColor = color;
+    label.numberOfLines = 0;
+    [self addSubview:label];
+    [self setValue:label forKey:@"_placeholderLabel"];
+}
+
+- (void)zj_textViewsSetPlaceholderColor:(UIColor *)placeholderColor{
+    //设置占位字符串的font
+    UILabel *label = [self valueForKey:@"_placeholderLabel"];
+    label.textColor = placeholderColor;
+    NSLog(@"%s", __func__);
+}
+
+
+- (void)was_setFont:(UIFont *)font{
+    //调用原方法 setFont:
+    [self was_setFont:font];
+    //设置占位字符串的font
+    UILabel *label = [self valueForKey:@"_placeholderLabel"];
+    label.font = font;
+    NSLog(@"%s", __func__);
+}
+
 @end
